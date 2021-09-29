@@ -49,12 +49,6 @@ steps:
       - '--location=$_GKE_LOCATION'
       - '--namespace=$_K8S_NAMESPACE'
     id: Apply deploy
-  - name: gcr.io/cloud-builders/helm
-    args:
-      - install
-      - 'grafana'
-      - 'grafana/grafana'
-    id: Install Grafana
 images:
   - '$_IMAGE_NAME:$COMMIT_SHA'
 options:
