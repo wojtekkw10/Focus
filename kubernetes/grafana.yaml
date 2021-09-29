@@ -1,3 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: grafana-pv
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
