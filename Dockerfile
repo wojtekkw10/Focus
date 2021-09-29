@@ -9,7 +9,8 @@ RUN mvn -f /app/pom.xml clean package
 #
 # Package stage
 #
-FROM openjdk:11-jre-slim
+FROM alpine
+RUN apk add openjdk11-jre
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]
