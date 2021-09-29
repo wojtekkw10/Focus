@@ -34,22 +34,3 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 20
-status:
-  availableReplicas: 3
-  conditions:
-  - lastTransitionTime: "2021-09-28T14:14:55Z"
-    lastUpdateTime: "2021-09-28T14:14:55Z"
-    message: Deployment has minimum availability.
-    reason: MinimumReplicasAvailable
-    status: "True"
-    type: Available
-  - lastTransitionTime: "2021-09-28T14:14:40Z"
-    lastUpdateTime: "2021-09-28T14:14:55Z"
-    message: ReplicaSet "focus-7ffb9d669b" has successfully progressed.
-    reason: NewReplicaSetAvailable
-    status: "True"
-    type: Progressing
-  observedGeneration: 1
-  readyReplicas: 3
-  replicas: 3
-  updatedReplicas: 3
