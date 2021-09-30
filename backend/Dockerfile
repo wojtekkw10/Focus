@@ -16,5 +16,5 @@ RUN mvn -f /app/pom.xml package
 FROM alpine:3.14.2
 RUN apk add openjdk11-jre
 COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT ["java","-jar","app.jar"]
