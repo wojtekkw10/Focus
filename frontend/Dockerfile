@@ -4,10 +4,10 @@
 FROM maven:3.6.0-jdk-11-slim AS build
 
 RUN mkdir app
-COPY frontend/pom.xml /app
+COPY pom.xml /app
 RUN mvn -f /app/pom.xml dependency:resolve
 
-COPY frontend/src /app/src
+COPY src /app/src
 RUN mvn -f /app/pom.xml package
 
 #
