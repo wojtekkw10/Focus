@@ -1,14 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: focus-deployment
   labels:
-    app: web
+    app: focus-frontend
+  name: focus-frontend
+  namespace: default
 spec:
+  progressDeadlineSeconds: 600
   replicas: 3
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: focus
+      app: focus-frontend
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -16,11 +19,12 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      creationTimestamp: null
       labels:
-        app: focus
+        app: focus-frontend
     spec:
       containers:
-      - image: gcr.io/vigilant-walker-327408/github.com/wojtekkw10/focus:137919a
+      - image: gcr.io/vigilant-walker-327408/github.com/wojtekkw10/frontend/focus:132f1e0
         imagePullPolicy: IfNotPresent
         name: focus-1
         resources: {}
