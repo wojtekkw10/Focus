@@ -12,7 +12,7 @@ public class Controller {
 
     @GetMapping("/")
     public String helloWorld(){
-        //personRepository.save(new Person("Jan", "Kowalski"));
+        personRepository.save(new Person("Jan", "Kowalski"));
 
         System.out.println(personRepository);
         return "Successfully added an entity to db";
