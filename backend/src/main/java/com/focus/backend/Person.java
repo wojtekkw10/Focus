@@ -1,26 +1,37 @@
 package com.focus.backend;
 
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Data
 @NoArgsConstructor
 @Entity
+@Table(name="Persons")
 public class Person {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(name="firstName", nullable = false)
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(name="lastName", nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }
