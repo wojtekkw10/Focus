@@ -23,10 +23,6 @@ public class Controller {
 
     @GetMapping("/")
     public ApplicationUser helloWorld(){
-        //personRepository.save(new Person("Jan", "Kowalski"));
-
-        userService.save(new ApplicationUser("user2", "password2"));
-
         return userService.findByUsername("user").get();
     }
 

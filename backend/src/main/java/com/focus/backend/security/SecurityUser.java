@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 public class SecurityUser extends User {
-    private String firstname;
+    private Long id;
 
     public SecurityUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
@@ -16,11 +16,11 @@ public class SecurityUser extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public String getFirstname() {
-        return firstname;
+    public Long getId() {
+        return id;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

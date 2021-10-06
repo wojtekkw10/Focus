@@ -19,15 +19,10 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("Searching user");
-        System.out.println(username);
-
-        ApplicationUser user = userService.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(""));
+        ApplicationUser user = userService.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return buildUserForAuthentication(user, List.of(new SimpleGrantedAuthority("USER")));
     }
@@ -35,7 +30,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     private User buildUserForAuthentication(ApplicationUser user,
                                             List<GrantedAuthority> authorities) {
         String username = user.getEmail();
-        String password = passwordEncoder.encode(user.getPassword());
+        String password = user.getPassword();
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
@@ -44,7 +39,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         SecurityUser securityUser = new SecurityUser(username, password, enabled, accountNonExpired, credentialsNonExpired,
                 accountNonLocked, authorities);
 
-        securityUser.setFirstname("Ada");
+        securityUser.setId(user.getId());
 
         return securityUser;
     }
