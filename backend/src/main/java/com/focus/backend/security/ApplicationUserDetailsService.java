@@ -8,13 +8,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class ApplicationUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
@@ -36,12 +35,8 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
-        SecurityUser securityUser = new SecurityUser(username, password, enabled, accountNonExpired, credentialsNonExpired,
+        return new User(username, password, enabled, accountNonExpired, credentialsNonExpired,
                 accountNonLocked, authorities);
-
-        securityUser.setId(user.getId());
-
-        return securityUser;
     }
 }
 

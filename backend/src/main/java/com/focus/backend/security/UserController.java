@@ -1,8 +1,5 @@
 package com.focus.backend.security;
 
-import com.focus.backend.security.ApplicationUser;
-import com.focus.backend.security.UserPostRequest;
-import com.focus.backend.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;

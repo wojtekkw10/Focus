@@ -7,13 +7,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -24,16 +19,21 @@ public class FormLoginSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .logout().logoutUrl("/users/logout").logoutSuccessUrl("/")
+
+                    .logout()
+                    .logoutUrl("/users/logout")
+                    .logoutSuccessUrl("/")
                 .and()
-                .httpBasic()
+                    .httpBasic()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/index.html", "/", "/home", "/login", "/users/create")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and().csrf().disable();
+                    .authorizeRequests()
+                    .antMatchers("/index.html", "/", "/home", "/login", "/users/create")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+                .and()
+                    .csrf()
+                    .disable();
     }
 
     @Override
