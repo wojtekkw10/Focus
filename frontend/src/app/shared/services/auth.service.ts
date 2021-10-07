@@ -1,13 +1,17 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
 
 export interface IUser {
+  id: number;
   email: string;
   avatarUrl?: string
 }
 
 const defaultPath = '/';
 const defaultUser = {
+  id: 5,
   email: 'sandra@example.com',
   avatarUrl: 'https://js.devexpress.com/Demos/WidgetsGallery/JSDemos/images/employees/06.png'
 };
@@ -24,14 +28,18 @@ export class AuthService {
     this._lastAuthenticatedPath = value;
   }
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   async logIn(email: string, password: string) {
 
     try {
       // Send request
-      console.log(email, password);
-      this._user = { ...defaultUser, email };
+      let user: Observable<IUser> = this.http.get<IUser>("http://localhost:8081/users/current", this.httpOptions("wojtek", "1234"))
+      let fetchedUser = await user.toPromise();
+
+      this._user = fetchedUser;
+
+      //this._user = {...defaultUser, email };
       this.router.navigate([this._lastAuthenticatedPath]);
 
       return {
@@ -47,21 +55,18 @@ export class AuthService {
     }
   }
 
-  async getUser() {
-    try {
-      // Send request
+  httpOptions(username: String, password: String) {
+    return {
+        headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Basic ' + btoa(username + ":" + password)
+      })
+    };
+  }
 
-      return {
-        isOk: true,
-        data: this._user
-      };
-    }
-    catch {
-      return {
-        isOk: false,
-        data: null
-      };
-    }
+  async getUser() {
+      let user: Observable<IUser> = this.http.get<IUser>("http://localhost:8081/users/current", this.httpOptions("wojtek", "1234"))
+      return user.toPromise();
   }
 
   async createAccount(email: string, password: string) {
