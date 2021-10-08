@@ -58,7 +58,7 @@ export class AuthService {
   httpOptions(username: String, password: String) {
     return {
         headers: new HttpHeaders({
-        'Content-Type':  'application/json',
+        //'Content-Type':  'application/json',
         'Authorization': 'Basic ' + btoa(username + ":" + password)
       })
     };
