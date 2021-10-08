@@ -26,17 +26,17 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         return buildUserForAuthentication(user, List.of(new SimpleGrantedAuthority("USER")));
     }
 
-    private User buildUserForAuthentication(ApplicationUser user,
+    private UserDetails buildUserForAuthentication(ApplicationUser user,
                                             List<GrantedAuthority> authorities) {
-        String username = user.getEmail();
-        String password = user.getPassword();
-        boolean enabled = true;
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-
-        return new User(username, password, enabled, accountNonExpired, credentialsNonExpired,
-                accountNonLocked, authorities);
+        return User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .disabled(false)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .authorities(authorities)
+                .build();
     }
 }
 
