@@ -40,16 +40,9 @@ export class AuthService {
   async logIn(email: string, password: string) {
 
     try {
-      // Send request
-      //let user: Observable<IUser> = this.http.post<IUser>("http://localhost:8081/users/login", this.httpOptions(email, password))
-      //let fetchedUser = await user.toPromise();
+      let user = await this.http.post<IUser>("http://localhost:8081/users/login", null, this.httpOptions(email, password)).toPromise();
+      this._user = user.body
 
-      await this.http.post<IUser>("http://localhost:8081/users/login", null, this.httpOptions(email, password)).toPromise();
-
-      console.log("asd")
-      //this._user = fetchedUser;
-
-      //this._user = {...defaultUser, email };
       this.router.navigate([this._lastAuthenticatedPath]);
 
       return {
@@ -124,6 +117,8 @@ export class AuthService {
   }
 
   async logOut() {
+    await this.http.post<void>("http://localhost:8081/users/logout", null, {withCredentials: true  }).toPromise();
+
     this._user = null;
     this.cookieService.deleteAll();
     this.router.navigate(['/login-form']);

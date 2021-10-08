@@ -29,6 +29,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ApplicationUser login(Principal principal){
+        if(principal == null) throw new UsernameNotFoundException("User is not logged in");
         return userService.findByUsername(principal.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
