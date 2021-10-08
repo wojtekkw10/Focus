@@ -33,7 +33,7 @@ public class FormLoginSecurityConfig extends WebSecurityConfigurerAdapter {
                     .httpBasic()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/index.html", "/", "/home", "/login", "/users/create")
+                    .antMatchers("/index.html", "/", "/home", "/login", "/users/create", "/users/logout")
                     .permitAll()
                     .anyRequest()
                     .authenticated()
@@ -53,7 +53,7 @@ public class FormLoginSecurityConfig extends WebSecurityConfigurerAdapter {
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

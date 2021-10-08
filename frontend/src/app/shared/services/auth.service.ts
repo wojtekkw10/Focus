@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 
 export interface IUser {
@@ -10,15 +11,10 @@ export interface IUser {
 }
 
 const defaultPath = '/';
-const defaultUser = {
-  id: 5,
-  email: 'sandra@example.com',
-  avatarUrl: 'https://js.devexpress.com/Demos/WidgetsGallery/JSDemos/images/employees/06.png'
-};
 
 @Injectable()
 export class AuthService {
-  private _user: IUser | null = defaultUser;
+  private _user: IUser | null = null;
   get loggedIn(): boolean {
     return !!this._user;
   }
@@ -28,16 +24,16 @@ export class AuthService {
     this._lastAuthenticatedPath = value;
   }
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(private router: Router, private http: HttpClient, private cookieService: CookieService) { }
 
   async logIn(email: string, password: string) {
 
     try {
       // Send request
-      let user: Observable<IUser> = this.http.get<IUser>("http://localhost:8081/users/current", this.httpOptions("wojtek", "1234"))
+      let user: Observable<HttpResponse<IUser>> = this.http.get<IUser>("http://localhost:8081/users/current", this.httpOptions(email, password))
       let fetchedUser = await user.toPromise();
 
-      this._user = fetchedUser;
+      this._user = fetchedUser.body;
 
       //this._user = {...defaultUser, email };
       this.router.navigate([this._lastAuthenticatedPath]);
@@ -60,12 +56,14 @@ export class AuthService {
         headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'Authorization': 'Basic ' + btoa(username + ":" + password)
-      })
+      }),
+      withCredentials: true, 
+      observe: 'response' as 'response'
     };
   }
 
   async getUser() {
-      let user: Observable<IUser> = this.http.get<IUser>("http://localhost:8081/users/current", this.httpOptions("wojtek", "1234"))
+      let user: Observable<IUser> = this.http.get<IUser>("http://localhost:8081/users/current", {withCredentials: true})
       return user.toPromise();
   }
 
@@ -123,6 +121,7 @@ export class AuthService {
 
   async logOut() {
     this._user = null;
+    this.cookieService.deleteAll();
     this.router.navigate(['/login-form']);
   }
 }

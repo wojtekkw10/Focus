@@ -1,7 +1,11 @@
 package com.focus.backend.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.ToString;
+
 import javax.persistence.*;
 
+@ToString
 @Entity
 @Table(name="users")
 public class ApplicationUser {
@@ -12,6 +16,7 @@ public class ApplicationUser {
     @Column(unique = true)
     private String email;
 
+    @JsonIgnore
     private String password;
 
     public ApplicationUser() {

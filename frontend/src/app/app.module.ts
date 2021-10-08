@@ -30,3 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+//npx -p devextreme-cli devextreme new angular-app app-name
+//npm install ngx-cookie-service
