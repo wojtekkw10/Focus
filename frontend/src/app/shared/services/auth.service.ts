@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable } from 'rxjs';
+import { UserService } from './user.service';
 
 export interface IUser {
   id: number;
@@ -24,24 +24,12 @@ export class AuthService {
     this._lastAuthenticatedPath = value;
   }
 
-  constructor(private router: Router, private http: HttpClient, private cookieService: CookieService) { }
-
-  httpOptions(username: String, password: String) {
-    return {
-        headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Basic ' + btoa(username + ":" + password)
-      }),
-      withCredentials: true, 
-      observe: 'response' as 'response'
-    };
-  }
+  constructor(private router: Router, private http: HttpClient, private cookieService: CookieService, private userService: UserService) { }
 
   async logIn(email: string, password: string) {
 
     try {
-      let user = await this.http.post<IUser>("http://localhost:8081/users/login", null, this.httpOptions(email, password)).toPromise();
-      this._user = user.body
+      this._user = await this.userService.login(email, password);
 
       this.router.navigate([this._lastAuthenticatedPath]);
 
@@ -60,16 +48,14 @@ export class AuthService {
   }
 
   async getUser() {
-      let user: Observable<IUser> = this.http.get<IUser>("http://localhost:8081/users/current", {withCredentials: true})
-      return user.toPromise();
+    return this.userService.fetchCurrentUserInfo();
   }
 
   async createAccount(email: string, password: string) {
     try {
-      // Send request
-      console.log(email, password);
+      await this.userService.createUser(email, password);
 
-      this.router.navigate(['/create-account']);
+      this.router.navigate(['/login']);
       return {
         isOk: true
       };
@@ -117,7 +103,7 @@ export class AuthService {
   }
 
   async logOut() {
-    await this.http.post<void>("http://localhost:8081/users/logout", null, {withCredentials: true  }).toPromise();
+    await this.userService.logout();
 
     this._user = null;
     this.cookieService.deleteAll();

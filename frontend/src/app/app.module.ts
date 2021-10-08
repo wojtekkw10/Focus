@@ -9,6 +9,7 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { UserService } from './shared/services/user.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { CookieService } from 'ngx-cookie-service';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [AuthService, ScreenService, AppInfoService, HttpClientModule, CookieService],
+  providers: [AuthService, ScreenService, AppInfoService, HttpClientModule, CookieService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
