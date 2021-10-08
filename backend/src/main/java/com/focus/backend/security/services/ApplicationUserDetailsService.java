@@ -1,5 +1,7 @@
-package com.focus.backend.security;
+package com.focus.backend.security.services;
 
+import com.focus.backend.security.model.ApplicationUser;
+import com.focus.backend.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.GrantedAuthority;

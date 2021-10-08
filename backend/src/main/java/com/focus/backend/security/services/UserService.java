@@ -1,5 +1,7 @@
-package com.focus.backend.security;
+package com.focus.backend.security.services;
 
+import com.focus.backend.security.model.ApplicationUser;
+import com.focus.backend.security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

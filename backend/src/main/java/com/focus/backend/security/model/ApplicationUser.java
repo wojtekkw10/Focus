@@ -1,4 +1,4 @@
-package com.focus.backend.security;
+package com.focus.backend.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.ToString;

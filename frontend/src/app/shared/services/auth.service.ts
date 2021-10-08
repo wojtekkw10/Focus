@@ -26,31 +26,6 @@ export class AuthService {
 
   constructor(private router: Router, private http: HttpClient, private cookieService: CookieService) { }
 
-  async logIn(email: string, password: string) {
-
-    try {
-      // Send request
-      let user: Observable<HttpResponse<IUser>> = this.http.get<IUser>("http://localhost:8081/users/current", this.httpOptions(email, password))
-      let fetchedUser = await user.toPromise();
-
-      this._user = fetchedUser.body;
-
-      //this._user = {...defaultUser, email };
-      this.router.navigate([this._lastAuthenticatedPath]);
-
-      return {
-        isOk: true,
-        data: this._user
-      };
-    }
-    catch {
-      return {
-        isOk: false,
-        message: "Authentication failed"
-      };
-    }
-  }
-
   httpOptions(username: String, password: String) {
     return {
         headers: new HttpHeaders({
@@ -60,6 +35,35 @@ export class AuthService {
       withCredentials: true, 
       observe: 'response' as 'response'
     };
+  }
+
+  async logIn(email: string, password: string) {
+
+    try {
+      // Send request
+      //let user: Observable<IUser> = this.http.post<IUser>("http://localhost:8081/users/login", this.httpOptions(email, password))
+      //let fetchedUser = await user.toPromise();
+
+      await this.http.post<IUser>("http://localhost:8081/users/login", null, this.httpOptions(email, password)).toPromise();
+
+      console.log("asd")
+      //this._user = fetchedUser;
+
+      //this._user = {...defaultUser, email };
+      this.router.navigate([this._lastAuthenticatedPath]);
+
+      return {
+        isOk: true,
+        data: this._user
+      };
+    }
+    catch(e) {
+      console.log(e)
+      return {
+        isOk: false,
+        message: "Authentication failed"
+      };
+    }
   }
 
   async getUser() {

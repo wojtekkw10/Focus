@@ -1,5 +1,6 @@
-package com.focus.backend.security;
+package com.focus.backend.security.repositories;
 
+import com.focus.backend.security.model.ApplicationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
