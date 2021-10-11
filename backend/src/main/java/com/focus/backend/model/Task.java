@@ -15,14 +15,15 @@ public class Task {
     @JoinColumn(name = "owning_user_id")
     private User owningUser;
 
-    @Enumerated(EnumType.ORDINAL)
-    private Status status;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private TaskStatus status;
 
     public Task() {
         //Hibernate
     }
 
-    public Task(String subject, String description, Status status) {
+    public Task(String subject, String description, TaskStatus status) {
         this.subject = subject;
         this.description = description;
         this.status = status;
@@ -48,11 +49,11 @@ public class Task {
         this.description = description;
     }
 
-    public Status getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 

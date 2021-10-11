@@ -1,4 +1,6 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
+import CustomStore from 'devextreme/data/custom_store';
 import 'devextreme/data/odata/store';
 
 @Component({
@@ -7,32 +9,74 @@ import 'devextreme/data/odata/store';
 
 export class TasksComponent {
   dataSource: any;
-  priority: any[];
+  statuses: any;
 
-  constructor() {
-    this.dataSource = {
-      store: {
-        type: 'odata',
-        key: 'Task_ID',
-        url: 'https://js.devexpress.com/Demos/DevAV/odata/Tasks'
-      },
-      expand: 'ResponsibleEmployee',
-      select: [
-        'Task_ID',
-        'Task_Subject',
-        'Task_Start_Date',
-        'Task_Due_Date',
-        'Task_Status',
-        'Task_Priority',
-        'Task_Completion',
-        'ResponsibleEmployee/Employee_Full_Name'
-      ]
-    };
-    this.priority = [
-      { name: 'High', value: 4 },
-      { name: 'Urgent', value: 3 },
-      { name: 'Normal', value: 2 },
-      { name: 'Low', value: 1 }
-    ];
+  constructor(private http: HttpClient) {
+    function isNotEmpty(value: any): boolean {
+                return value !== undefined && value !== null && value !== "";
+            }
+    this.dataSource = new CustomStore({
+      key: "id",
+      load: function (loadOptions: any) {
+          let params: HttpParams = new HttpParams();
+          [
+              "skip",
+              "take",
+              "requireTotalCount",
+              "requireGroupCount",
+              "sort",
+              "filter",
+              "totalSummary",
+              "group",
+              "groupSummary"
+          ].forEach(function(i) {
+              if (i in loadOptions && isNotEmpty(loadOptions[i]))
+                  params = params.set(i, JSON.stringify(loadOptions[i]));
+          });
+          return http.get('http://localhost:8081/tasks/all', { params: params, withCredentials: true })
+              .toPromise()
+              .then((data: any) => {
+                  return {
+                      data: data.data,
+                      totalCount: data.totalCount,
+                      summary: data.summary,
+                      groupCount: data.groupCount
+                  };
+              })
+              .catch(error => { throw 'Data Loading Error' });
+      }
+  });
+
+  this.statuses = new CustomStore({
+    key: "id",
+    load: function (loadOptions: any) {
+        let params: HttpParams = new HttpParams();
+        [
+            "skip",
+            "take",
+            "requireTotalCount",
+            "requireGroupCount",
+            "sort",
+            "filter",
+            "totalSummary",
+            "group",
+            "groupSummary"
+        ].forEach(function(i) {
+            if (i in loadOptions && isNotEmpty(loadOptions[i]))
+                params = params.set(i, JSON.stringify(loadOptions[i]));
+        });
+        return http.get('http://localhost:8081/tasks/statuses', { params: params, withCredentials: true })
+            .toPromise()
+            .then((data: any) => {
+                return {
+                    data: data.data,
+                    totalCount: data.totalCount,
+                    summary: data.summary,
+                    groupCount: data.groupCount
+                };
+            })
+            .catch(error => { throw 'Data Loading Error' });
+    }
+});
   }
 }

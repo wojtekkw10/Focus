@@ -38,8 +38,8 @@ public class UserController {
     }
 
     @GetMapping("/current")
-    public User getCurrentUser(Principal principal){
-        return userAware.getLoggedUser(principal);
+    public SecurityUser getCurrentUser(Principal principal){
+        return userAware.getLoggedSecurityUser(principal);
     }
 
     @PostMapping("/login")

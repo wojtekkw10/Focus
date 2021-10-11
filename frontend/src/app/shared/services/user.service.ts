@@ -12,7 +12,7 @@ export class UserService {
   }
 
   public async fetchCurrentUserInfo(): Promise<IUser>{
-    let user: Observable<IUser> = this.http.get<IUser>("http://localhost:8081/users/current", {withCredentials: true})
+    let user: Observable<IUser> = this.http.get<IUser>("http://localhost:8081/users/current", {withCredentials: true});
     return user.toPromise();
   }
 

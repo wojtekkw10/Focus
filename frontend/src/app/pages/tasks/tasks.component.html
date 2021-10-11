@@ -8,63 +8,41 @@
   [columnAutoWidth]="true"
   [columnHidingEnabled]="true">
 
+  <dxo-search-panel [visible]="true"></dxo-search-panel>
   <dxo-paging [pageSize]="10"></dxo-paging>
   <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
+  <dxo-editing
+  mode="cell"
+  [allowUpdating]="true"
+  [allowAdding]="true">
+</dxo-editing>
+
   <dxi-column
-    dataField="Task_ID"
+    dataField="id"
     [width]="90"
     [hidingPriority]="2">
   </dxi-column>
   <dxi-column
-    dataField="Task_Subject"
-    [width]="190"
-    caption="Subject"
-    [hidingPriority]="8">
-  </dxi-column>
-  <dxi-column
-    dataField="Task_Status"
-    caption="Status"
-    [hidingPriority]="6">
-  </dxi-column>
-  <dxi-column
-    dataField="Task_Priority"
-    caption="Priority"
-    [hidingPriority]="5">
+    dataField="status"
+    [width]="90"
+    [hidingPriority]="2">
+
     <dxo-lookup
-      [dataSource]="priority"
-      valueExpr="value"
-      displayExpr="name">
+      [dataSource]="statuses"
+      displayExpr="name"
+      valueExpr="id">
     </dxo-lookup>
   </dxi-column>
   <dxi-column
-    dataField="ResponsibleEmployee.Employee_Full_Name"
-    caption="Assigned To"
-    [allowSorting]="false"
-    [hidingPriority]="7">
+    dataField="subject"
+    [width]="400"
+    [hidingPriority]="2">
   </dxi-column>
   <dxi-column
-    dataField="Task_Start_Date"
-    caption="Start Date"
-    dataType="date"
-    [hidingPriority]="3">
+    dataField="description"
+    [hidingPriority]="2">
   </dxi-column>
-  <dxi-column
-    dataField="Task_Due_Date"
-    caption="Due Date"
-    dataType="date"
-    [hidingPriority]="4">
-  </dxi-column>
-  <dxi-column
-    dataField="Task_Priority"
-    caption="Priority"
-    name="Priority"
-    [hidingPriority]="1">
-  </dxi-column>
-  <dxi-column
-    dataField="Task_Completion"
-    caption="Completion"
-    [hidingPriority]="0">
-  </dxi-column>
+
 </dx-data-grid>

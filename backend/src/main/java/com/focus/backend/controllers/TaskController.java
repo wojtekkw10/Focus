@@ -1,16 +1,13 @@
 package com.focus.backend.controllers;
 
 import com.focus.backend.UserAware;
-import com.focus.backend.model.User;
-import com.focus.backend.model.LongId;
-import com.focus.backend.model.Task;
+import com.focus.backend.model.*;
 import com.focus.backend.services.TaskService;
 import com.focus.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -26,10 +23,10 @@ public class TaskController {
     private UserAware userAware;
 
     @GetMapping("/all")
-    public List<Task> getAll(Principal principal){
+    public DataGridResponse<Task> getAll(Principal principal){
         User user = userAware.getLoggedUser(principal);
 
-        return user.getTasks();
+        return new DataGridResponse<>(user.getTasks());
     }
 
     @PostMapping("/create")
@@ -53,5 +50,15 @@ public class TaskController {
         user.getTasks().removeIf((task) -> Objects.equals(task.getId(), taskId.getId()));
 
         userService.save(user);
+    }
+
+    @GetMapping("/statuses/all")
+    public DataGridResponse<TaskStatus> getAllStatuses(){
+        return new DataGridResponse<>(taskService.findAllStatuses());
+    }
+
+    @PostMapping("/statuses/create")
+    public TaskStatus createStatus(TaskStatus taskStatus){
+        return taskService.saveStatus(taskStatus);
     }
 }

@@ -15,8 +15,8 @@ const defaultPath = '/';
 @Injectable()
 export class AuthService {
   private _user: IUser | null = null;
-  get loggedIn(): boolean {
-    return !!this._user;
+  loggedIn(): boolean {
+      return localStorage.getItem("logged") === "true"
   }
 
   private _lastAuthenticatedPath: string = defaultPath;
@@ -30,6 +30,7 @@ export class AuthService {
 
     try {
       this._user = await this.userService.login(email, password);
+      localStorage.setItem("logged", "true");
 
       this.router.navigate([this._lastAuthenticatedPath]);
 
@@ -103,8 +104,13 @@ export class AuthService {
   }
 
   async logOut() {
-    await this.userService.logout();
+    try{
+      await this.userService.logout();
+    } catch(e){
+      //user is already logged out
+    }
 
+    localStorage.clear();
     this._user = null;
     this.cookieService.deleteAll();
     this.router.navigate(['/login-form']);
@@ -115,14 +121,15 @@ export class AuthService {
 export class AuthGuardService implements CanActivate {
   constructor(private router: Router, private authService: AuthService) { }
 
-  canActivate(route: ActivatedRouteSnapshot): boolean {
-    const isLoggedIn = this.authService.loggedIn;
+  async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
+    const isLoggedIn = this.authService.loggedIn();
     const isAuthForm = [
       'login-form',
       'reset-password',
       'create-account',
       'change-password/:recoveryCode'
     ].includes(route.routeConfig?.path || defaultPath);
+
 
     if (isLoggedIn && isAuthForm) {
       this.authService.lastAuthenticatedPath = defaultPath;
@@ -139,5 +146,5 @@ export class AuthGuardService implements CanActivate {
     }
 
     return isLoggedIn || isAuthForm;
-  }
+  } 
 }
