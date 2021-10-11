@@ -1,12 +1,10 @@
 package com.focus.backend.services;
 
-import com.focus.backend.model.ApplicationUser;
+import com.focus.backend.model.User;
 import com.focus.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -16,12 +14,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Optional<ApplicationUser> findByUsername(String username){
-        return repository.findByEmail(username);
-    }
-
-    public ApplicationUser save(ApplicationUser user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User save(User user){
         return repository.save(user);
     }
 }

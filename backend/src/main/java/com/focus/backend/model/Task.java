@@ -13,7 +13,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "owning_user_id")
-    private ApplicationUser owningUser;
+    private User owningUser;
 
     @Enumerated(EnumType.ORDINAL)
     private Status status;
@@ -56,11 +56,11 @@ public class Task {
         this.status = status;
     }
 
-    public ApplicationUser getOwningUser() {
+    public User getOwningUser() {
         return owningUser;
     }
 
-    public void setOwningUser(ApplicationUser owningUser) {
+    public void setOwningUser(User owningUser) {
         this.owningUser = owningUser;
     }
 }
