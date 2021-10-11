@@ -1,4 +1,4 @@
-package com.focus.backend;
+package com.focus.backend.model;
 
 import lombok.NoArgsConstructor;
 

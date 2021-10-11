@@ -1,8 +1,9 @@
-package com.focus.backend.security.api;
+package com.focus.backend.controllers;
 
-import com.focus.backend.security.model.ApplicationUser;
-import com.focus.backend.security.model.UserPostRequest;
-import com.focus.backend.security.services.UserService;
+import com.focus.backend.UserAware;
+import com.focus.backend.model.ApplicationUser;
+import com.focus.backend.security.UserPostRequest;
+import com.focus.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,6 +17,9 @@ import java.security.Principal;
 @RequestMapping("users")
 public class UserController {
     @Autowired
+    private UserAware userAware;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -28,15 +32,13 @@ public class UserController {
 
     @GetMapping("/current")
     public ApplicationUser getCurrentUser(Principal principal){
-        return userService.findByUsername(principal.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userAware.getLoggedUser(principal);
     }
 
     @PostMapping("/login")
     public ApplicationUser login(Principal principal){
         if(principal == null) throw new UsernameNotFoundException("User is not logged in");
-        return userService.findByUsername(principal.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userAware.getLoggedUser(principal);
     }
 
     @PostMapping("/logout")

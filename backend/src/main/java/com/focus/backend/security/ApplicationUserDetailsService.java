@@ -1,7 +1,7 @@
-package com.focus.backend.security.services;
+package com.focus.backend.security;
 
-import com.focus.backend.security.model.ApplicationUser;
-import com.focus.backend.security.services.UserService;
+import com.focus.backend.model.ApplicationUser;
+import com.focus.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +24,8 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ApplicationUser user = userService.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        System.out.println(user);
 
         return buildUserForAuthentication(user, List.of(new SimpleGrantedAuthority("USER")));
     }

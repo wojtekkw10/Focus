@@ -1,4 +1,4 @@
-package com.focus.backend.security.model;
+package com.focus.backend.security;
 
 import lombok.Data;
 

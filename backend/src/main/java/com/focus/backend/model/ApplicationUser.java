@@ -1,9 +1,10 @@
-package com.focus.backend.security.model;
+package com.focus.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @ToString
 @Entity
@@ -19,7 +20,21 @@ public class ApplicationUser {
     @JsonIgnore
     private String password;
 
+    @OneToMany
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Task> tasks;
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
     public ApplicationUser() {
+        //Hibernate
     }
 
     public ApplicationUser(String email, String password) {

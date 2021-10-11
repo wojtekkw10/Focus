@@ -1,6 +1,5 @@
 package com.focus.backend.security;
 
-import com.focus.backend.security.services.ApplicationUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

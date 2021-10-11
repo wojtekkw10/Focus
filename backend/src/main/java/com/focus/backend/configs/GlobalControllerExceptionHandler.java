@@ -1,4 +1,4 @@
-package com.focus.backend;
+package com.focus.backend.configs;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
