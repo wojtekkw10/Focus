@@ -3,26 +3,24 @@
 <dx-data-grid class="dx-card wide-card"
   [dataSource]="dataSource"
   [showBorders]="false"
-  [focusedRowEnabled]="true"
-  [focusedRowIndex]="0"
   [columnAutoWidth]="true"
   [columnHidingEnabled]="true">
 
   <dxo-search-panel [visible]="true"></dxo-search-panel>
-  <dxo-paging [pageSize]="10"></dxo-paging>
-  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
   <dxo-editing
   mode="cell"
   [allowUpdating]="true"
-  [allowAdding]="true">
+  [allowAdding]="true"
+  [allowDeleting]="true">
 </dxo-editing>
 
   <dxi-column
     dataField="id"
     [width]="90"
-    [hidingPriority]="2">
+    [hidingPriority]="2"
+    [allowEditing]="false">
   </dxi-column>
   <dxi-column
     dataField="status"
@@ -31,7 +29,7 @@
 
     <dxo-lookup
       [dataSource]="statuses"
-      displayExpr="name"
+      displayExpr="status"
       valueExpr="id">
     </dxo-lookup>
   </dxi-column>

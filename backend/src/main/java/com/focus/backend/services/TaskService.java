@@ -21,6 +21,16 @@ public class TaskService {
         return repository.findAll();
     }
 
+    public Task update(Task task){
+        Task updatedTask = repository.getById(task.getId());
+
+        if(task.getDescription() != null) updatedTask.setDescription(task.getDescription());
+        if(task.getSubject() != null) updatedTask.setSubject(task.getSubject());
+        if(task.getStatus() != null) updatedTask.setStatus(task.getStatus());
+
+        return repository.save(updatedTask);
+    }
+
     public Task save(Task task){
         return repository.save(task);
     }

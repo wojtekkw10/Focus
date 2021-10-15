@@ -30,17 +30,31 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public Task createTask(Principal principal, @RequestBody Task task){
+    public Task createTask(Principal principal, @RequestBody Task task) throws StatusNotFoundException{
         User user = userAware.getLoggedUser(principal);
 
+        System.out.println(task);
+
         task.setOwningUser(user);
+        task.setStatus(getStatusForId(task.getStatus().getId()));
         Task dbTask = taskService.save(task);
 
         user.getTasks().add(dbTask);
 
+        System.out.println(user);
+
         userService.save(user);
 
         return dbTask;
+    }
+
+    private TaskStatus getStatusForId(Long id) throws StatusNotFoundException {
+        return taskService.findAllStatuses().stream().filter((status) -> Objects.equals(status.getId(), id)).findFirst().orElseThrow(StatusNotFoundException::new);
+    }
+
+    @PutMapping("/update")
+    public Task updateTask(@RequestBody Task task){
+        return taskService.update(task);
     }
 
     @DeleteMapping("/delete")
@@ -57,8 +71,14 @@ public class TaskController {
         return new DataGridResponse<>(taskService.findAllStatuses());
     }
 
+    @GetMapping("/statuses/{id}")
+    public TaskStatus getStatus(@PathVariable Long id) throws StatusNotFoundException{
+        return getStatusForId(id);
+    }
+
     @PostMapping("/statuses/create")
-    public TaskStatus createStatus(TaskStatus taskStatus){
+    public TaskStatus createStatus(@RequestBody TaskStatus taskStatus){
+        System.out.println(taskStatus);
         return taskService.saveStatus(taskStatus);
     }
 }

@@ -1,14 +1,22 @@
 package com.focus.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 @Entity
+@ToString
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false, columnDefinition = "varchar(255) default ''")
     private String subject;
+
+    @Column(nullable = false, columnDefinition = "varchar(255) default ''")
     private String description;
 
     @ManyToOne
@@ -63,5 +71,11 @@ public class Task {
 
     public void setOwningUser(User owningUser) {
         this.owningUser = owningUser;
+    }
+
+    @JsonGetter("status")
+    public Long getJsonStatus(){
+        if(status == null) return null;
+        return status.getId();
     }
 }
