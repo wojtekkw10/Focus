@@ -21,7 +21,6 @@
 
   <!-- The modules that are part of this project. -->
   <modules>
-    <module>frontend</module>
     <module>backend</module>
   </modules>
 
