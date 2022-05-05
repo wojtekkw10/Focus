@@ -31,6 +31,7 @@ public class UserController {
     private JavaMailSender mailSender;
 
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CRETAED)
     public SecurityUser create(@RequestBody UserPostRequest request){
        User user = userService.save(new User());
 
