@@ -7,6 +7,7 @@ import com.focus.backend.security.UserPostRequest;
 import com.focus.backend.services.SecurityUserService;
 import com.focus.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,7 +32,7 @@ public class UserController {
     private JavaMailSender mailSender;
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CRETAED)
+    @ResponseStatus(HttpStatus.CREATED)
     public SecurityUser create(@RequestBody UserPostRequest request){
        User user = userService.save(new User());
 
@@ -57,7 +58,7 @@ public class UserController {
     @GetMapping("/mail")
     public void sendMail(){
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("wojciech.kwasniewicz@dxc.com");
+        message.setTo("");
         message.setSubject("Subject");
         message.setText("Your account has been <b>created</b>");
         mailSender.send(message);
